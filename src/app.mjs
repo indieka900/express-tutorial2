@@ -5,13 +5,13 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 const mockUsers = [
     {id:1, username: "Joseph11", displayName: "Jose1"},
-    {id:2, username: "Joseph22", displayName: "Jose2"},
-    {id:3, username: "Joseph33", displayName: "Jose3"},
-    {id:4, username: "Joseph44", displayName: "Jose4"}
+    {id:2, username: "Mark", displayName: "Mrk"},
+    {id:3, username: "Jemo", displayName: "James"},
+    {id:4, username: "Felix", displayName: "Ferrouz"}
 ]
 
 app.get("/", (req, res) => {
@@ -19,7 +19,14 @@ app.get("/", (req, res) => {
 })
 
 app.get("/api/users", (req, res) =>{
-    res.status(200).send(mockUsers)
+    console.log(req.query)
+    const {query: {filter, value}, } = req
+    console.log(`filter ${filter} and value${value}`)
+    if (!filter && !value) return res.status(200).send(mockUsers)
+    if (filter && value){
+        return res.send(mockUsers.filter((user) => user[filter].includes(value)))
+    }
+    //http://localhost:3000/api/users?filter=displayName&value=r
 })
 
 app.get("/api/users/:id/:name", (req, res) =>{
@@ -48,6 +55,6 @@ app.post("/api/adduser", (req, res) =>{
 
 
 
-app.listen(PORT, () => {
-    console.log(`Running on port ${PORT}`)
+app.listen(port, () => {
+    console.log(`Running on port ${port}`)
 })
