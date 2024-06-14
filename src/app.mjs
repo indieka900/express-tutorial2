@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv'
-import usersRouter from "./routes/users_routes.mjs" 
+import routers from "./routes/app.mjs" 
 
 const app = express();
 
@@ -9,7 +9,7 @@ dotenv.config()
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
-app.use(usersRouter)
+app.use(routers)
 
 const port = process.env.PORT || 3000;
 
