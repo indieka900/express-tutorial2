@@ -1,4 +1,5 @@
 import express from 'express';
+import { query, validationResult, body } from "express-validator"
 import dotenv from 'dotenv'
 const app = express();
 
@@ -42,7 +43,15 @@ app.get("/", (req, res) => {
     res.status(201).send({message: "Hello Joseph, this is working"})
 })
 
-app.get("/api/users", loggingMiddleware, (req, res) =>{
+app.get("/api/users", 
+    query('filter').isString().notEmpty().withMessage("Must be not be empty")
+    .isLength({min: 3, max: 10}).withMessage("Must be at least 3 - 10 characters"),
+    (req, res, next) => {
+        const result = validationResult(req);
+        console.log(result);
+        next();
+    }, 
+    (req, res) =>{
     //console.log(req.query)
     const {query: {filter, value}, } = req
     //console.log(`filter ${filter} and value${value}`)
@@ -79,7 +88,7 @@ app.get("/api/user/",
     )
 })
 
-app.post("/api/adduser", (req, res) =>{
+app.post("/api/adduser", body(), (req, res) =>{
     const {body} = req
     const newUser = {
         id: mockUsers.length + 1, ...body
