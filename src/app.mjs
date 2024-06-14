@@ -1,5 +1,5 @@
 import express from 'express';
-import { query, validationResult, body } from "express-validator"
+import { query, validationResult, body, matchedData } from "express-validator"
 import dotenv from 'dotenv'
 const app = express();
 
@@ -88,14 +88,29 @@ app.get("/api/user/",
     )
 })
 
-app.post("/api/adduser", body(), (req, res) =>{
-    const {body} = req
-    const newUser = {
-        id: mockUsers.length + 1, ...body
-    };
-    mockUsers.push(newUser);
-    res.status(201).send(mockUsers);
-});
+app.post("/api/adduser",[ body('username').notEmpty().withMessage("Should not be empty")
+    .isLength({min:4, max: 12}).withMessage("Should be between 4-12 characters")
+    .isString().withMessage("Must be a String"),
+    body('displayName').notEmpty().withMessage('Display-name must not be empty')
+    ],
+    (req, res, next) => {
+        const result = validationResult(req);
+        console.log(result);
+        if(!result.isEmpty()){
+            return res.status(400).send({errrors: result.array()})
+        }
+        next();
+    }, 
+    (req, res) =>{
+        const data = matchedData(req)
+        //const {body} = req
+        const newUser = {
+            id: mockUsers.length + 1, ...data
+        };
+        mockUsers.push(newUser);
+        res.status(201).send(mockUsers);
+    }
+);
 
 app.put("/api/users/:id", (req, res) =>{
     const {body, findUserIndex} = req
