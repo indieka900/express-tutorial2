@@ -1,5 +1,5 @@
 import express from 'express';
-import { query, validationResult, body, matchedData, checkSchema } from "express-validator"
+import { query, validationResult, body, matchedData, checkSchema, param } from "express-validator"
 import dotenv from 'dotenv'
 import { createuserValidation } from './utils/validationSchemas.mjs';
 const app = express();
@@ -109,8 +109,14 @@ app.post("/api/adduser",checkSchema(createuserValidation),
     }
 );
 
-app.put("/api/users/:id", (req, res) =>{
+app.put("/api/users/:id", param('id').isInt().withMessage("Id Must be an Integer"),resolveUserId, (req, res) =>{
+    const result = validationResult(req);
+    console.log(result);
+    if(!result.isEmpty()){
+        return res.status(400).send({errrors: result.array()})
+    }
     const {body, findUserIndex} = req
+    const data = matchedData(req)
 
     if (findUserIndex === -1) return res.sendStatus(200);
 
