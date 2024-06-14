@@ -1,6 +1,7 @@
 import express from 'express';
-import { query, validationResult, body, matchedData } from "express-validator"
+import { query, validationResult, body, matchedData, checkSchema } from "express-validator"
 import dotenv from 'dotenv'
+import { createuserValidation } from './utils/validationSchemas.mjs';
 const app = express();
 
 dotenv.config()
@@ -88,11 +89,7 @@ app.get("/api/user/",
     )
 })
 
-app.post("/api/adduser",[ body('username').notEmpty().withMessage("Should not be empty")
-    .isLength({min:4, max: 12}).withMessage("Should be between 4-12 characters")
-    .isString().withMessage("Must be a String"),
-    body('displayName').notEmpty().withMessage('Display-name must not be empty')
-    ],
+app.post("/api/adduser",checkSchema(createuserValidation),
     (req, res, next) => {
         const result = validationResult(req);
         console.log(result);
