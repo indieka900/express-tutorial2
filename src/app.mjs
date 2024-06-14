@@ -53,13 +53,14 @@ app.get("/api/users", loggingMiddleware, (req, res) =>{
     return res.status(200).send(mockUsers)
 })
 
-app.get("/api/users/:id",
-    (req, res, next) => {
-        console.log(`Middleware 2  ${req.method} - ${req.url}`);
-        next();
-    },
+app.get("/api/user/",
+    // (req, res, next) => {
+    //     console.log(`Middleware 2  ${req.method} - ${req.url}`);
+    //     next();
+    // },
     (req, res) =>{
-    const {id} = req.params
+    const {id} = req.query
+    console.log(req.params)
     var parseId;
     if (id) {
        parseId = parseInt(id) 
