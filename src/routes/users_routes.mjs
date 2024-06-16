@@ -9,9 +9,6 @@ import { createUser, deleteUser,
 
 const router = Router();
 
-router.get("/", (req, res) => {
-    res.status(201).send({message: "Hello Joseph, this is working"})
-})
 
 router.get("/api/users",
     query('filter').isString().notEmpty().withMessage("Must be not be empty")
