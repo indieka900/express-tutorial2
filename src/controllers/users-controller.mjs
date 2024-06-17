@@ -22,6 +22,18 @@ export const getUsers = (req, res) =>{
     //console.log(req.query)
     console.log(req.headers.cookies)
     console.log(req.cookies) 
+
+    req.sessionStore.get(req.sessionID, (err, sessionData) => {
+        if(err){
+            console.log(err);
+            throw err;
+        }
+        console.log("/////////////")
+        console.log(sessionData)
+    })
+
+    console.log(req.session)
+    console.log(req.sessionID)
     const {query: {filter, value}, } = req
     //console.log(`filter ${filter} and value${value}`)
     if (filter && value){
