@@ -20,6 +20,8 @@ export  const createUser = (req, res) =>{
 
 export const getUsers = (req, res) =>{
     //console.log(req.query)
+    console.log(req.headers.cookies)
+    console.log(req.cookies) 
     const {query: {filter, value}, } = req
     //console.log(`filter ${filter} and value${value}`)
     if (filter && value){
