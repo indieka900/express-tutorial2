@@ -1,8 +1,8 @@
 export var mockUsers = [
-    {id:1, username: "Joseph11", displayName: "Jose1"},
-    {id:2, username: "Mark", displayName: "Mrk"},
-    {id:3, username: "Jemo", displayName: "James"},
-    {id:4, username: "Felix", displayName: "Ferrouz"}
+    {id:1, username: "Joseph11", displayName: "Jose1", password: "jose123"},
+    {id:2, username: "Mark", displayName: "Mrk", password: "mark123"},
+    {id:3, username: "Jemo", displayName: "James", password: "jemo123"},
+    {id:4, username: "Felix", displayName: "Ferrouz", password: "felix123"}
 ]
 
 export const resolveUserId = (req, res, next) => {
