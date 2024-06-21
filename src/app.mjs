@@ -63,7 +63,13 @@ app.get('/api/auth/status', (req, res) => {
     return req.user ? res.send(req.user) : res.sendStatus(401);
 })
 
-
+app.post("/api/auth/logout", (req, res) => {
+    if (!req.user) return res.sendStatus(401);
+    req.logout((error) => {
+        if (error) return res.sendStatus(400);
+        res.send(200);
+    })
+})
 
 app.listen(port, () => {
     console.log(`Running on port ${port}`)
