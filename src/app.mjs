@@ -28,6 +28,8 @@ app.use(passport.session())
 
 app.use(routers)
 
+//todo database mongo
+
 const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
